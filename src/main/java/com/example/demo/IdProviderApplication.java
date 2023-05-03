@@ -1,8 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.person.BusinessRelation;
-import com.example.demo.person.Person;
-import com.example.demo.person.PersonRepository;
+import com.example.demo.entity.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,36 +21,55 @@ public class IdProviderApplication {
     }
 
     @Bean
-    CommandLineRunner runner(PersonRepository personRepository, MongoTemplate mongoTemplate) {
+    CommandLineRunner runner(EntityRepository entityRepository, MongoTemplate mongoTemplate) {
+        entityRepository.deleteAll();
         return args -> {
             String email = "df@df.com";
-            Person person = new Person(
-                    BusinessRelation.INTERNAL_EMPLOYEE,
+            ExternalPrivateEntity entity = new ExternalPrivateEntity(
                     "Chris",
                     "123456",
                     email,
                     LocalDateTime.now()
             );
+            InternalEntity internalEntity=new InternalEntity(
+                    "David",
+                    "1234",
+                    "df@fd.com",
+                    LocalDateTime.now(),
+                    InternalTeam.IT_SUPPORT,
+                    true
+            );
+            ExternalBusinessEntity e = new ExternalBusinessEntity(
+                    "Chris",
+                    "123456",
+                    "asd@asd.com",
+                    LocalDateTime.now(),
+                    "Google"
+            );
  //           usingMongoTemplateAndQuery(personRepository, mongoTemplate, email, person);
-            personRepository.findPersonByEmail(email).ifPresentOrElse(s->{
-                System.out.println(person + " already exists");
-            },()->{   System.out.println("Inserting person " + person);
-                personRepository.insert(person);});
+//            entityRepository.findEntityByEmail(email).ifPresentOrElse(s->{
+//                System.out.println(entity + " already exists");
+//            },()->{   System.out.println("Inserting person " + entity);
+//                entityRepository.insert(entity);});
+//            entityRepository.insert(internalEntity);
+//            entityRepository.insert(e);
+
+            entityRepository.insert(List.of(entity,internalEntity,e));
         };
     }
 
-    private void usingMongoTemplateAndQuery(PersonRepository personRepository, MongoTemplate mongoTemplate, String email, Person person) {
+    private void usingMongoTemplateAndQuery(EntityRepository entityRepository, MongoTemplate mongoTemplate, String email, Entity entity) {
         Query query = new Query();
         query.addCriteria(Criteria.where("email").is(email));
-        List<Person> personList = mongoTemplate.find(query, Person.class);
-        if (personList.size() > 1) {
+        List<Entity> entityList = mongoTemplate.find(query, Entity.class);
+        if (entityList.size() > 1) {
             throw new IllegalStateException("found to many person with email " + email);
         }
-        if (personList.isEmpty()) {
-            System.out.println("Inserting person " + person);
-            personRepository.insert(person);
+        if (entityList.isEmpty()) {
+            System.out.println("Inserting person " + entity);
+            entityRepository.insert(entity);
         }else {
-            System.out.println(person + " already exists");
+            System.out.println(entity + " already exists");
         }
     }
 

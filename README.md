@@ -6,4 +6,5 @@
 
     -Added MainController 
     -Added connection to MongoDB+docker compose to launch DB
-    -Created person class
+    -Created entity class
+    -created entity subclasses that reflect possible variations of entities
