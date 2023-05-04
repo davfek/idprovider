@@ -19,8 +19,8 @@ public class EntityController {
     private final EntityRepository entityRepository;
 
     @GetMapping
-    public List<Entity> fetchAllEntities() {
-        return entityService.getAllEntities();
+    public ResponseEntity<List<Entity>> fetchAllEntities() {
+        return new ResponseEntity<>(entityService.getAllEntities(), HttpStatus.OK);
     }
 
     @GetMapping("/byEmail/{email}")
@@ -29,6 +29,64 @@ public class EntityController {
 
         if (entityData.isPresent()) {
             return new ResponseEntity<>(entityData.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @GetMapping("/byName/{name}")
+    public ResponseEntity<Entity> findEntityByName(@PathVariable("name") String name) {
+        Optional<Entity> entityData = entityRepository.findEntityByName(name);
+
+        if (entityData.isPresent()) {
+            return new ResponseEntity<>(entityData.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+
+    @GetMapping("/byClass/{_class}")
+    public ResponseEntity<List<Entity>> findEntityByClass(@PathVariable("_class") String _class) {
+        if (_class.equalsIgnoreCase("internalentity")) {
+            _class = "com.example.demo.entity.InternalEntity";
+        }
+        if (_class.equalsIgnoreCase("externalbusinessentity")) {
+            _class = "com.example.demo.entity.ExternalBusinessEntity";
+        }
+        if (_class.equalsIgnoreCase("externalprivateentity")) {
+            _class = "com.example.demo.entity.ExternalPrivateEntity";
+        }
+
+        List<Entity> entityData = entityRepository.findEntityByClass(_class);
+        if (!entityData.isEmpty()) {
+            return new ResponseEntity<>(entityData, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @GetMapping("/byCompany/{company}")
+    public ResponseEntity<List<Entity>> findEntityByCompany(@PathVariable("company") String company) {
+        List<Entity> entityData = entityRepository.findEntityByCompany(company);
+
+        if (!entityData.isEmpty()) {
+            return new ResponseEntity<>(entityData, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @GetMapping("/byTeam/{internalTeam}")
+    public ResponseEntity<List<Entity>> findEntityByTeam(@PathVariable("company") InternalTeam internalTeam) {
+        List<Entity> entityData = entityRepository.findEntityByTeam(internalTeam);
+
+        if (!entityData.isEmpty()) {
+            return new ResponseEntity<>(entityData, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -65,50 +123,36 @@ public class EntityController {
         }
     }
 
-    @PutMapping("/ExternalBusinessEntity/{id}")
-    public ResponseEntity<Entity> updateExternalBusinessEntity(@PathVariable("id") String id, @RequestBody ExternalBusinessEntity entity) {
-        Optional<Entity> entityData = entityRepository.findById(id);
-
-        if (entityData.isPresent()) {
-            ExternalBusinessEntity entity1=(ExternalBusinessEntity) entityData.get();
-            entity1.setCompany(entity.getCompany());
-            entity1.setName(entity.getName());
-            entity1.setPhoneNumber(entity.getPhoneNumber());
-            entity1.setEmail(entity.getEmail());
-            return new ResponseEntity<>(entityRepository.save(entity1),HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-    }   @PutMapping("/ExternalPrivateEntity/{id}")
-    public ResponseEntity<Entity> updatePrivateEntity(@PathVariable("id") String id, @RequestBody ExternalPrivateEntity entity) {
-        Optional<Entity> entityData = entityRepository.findById(id);
-
-        if (entityData.isPresent()) {
-            ExternalPrivateEntity entity1=(ExternalPrivateEntity) entityData.get();
-            entity1.setName(entity.getName());
-            entity1.setPhoneNumber(entity.getPhoneNumber());
-            entity1.setEmail(entity.getEmail());
-            return new ResponseEntity<>(entityRepository.save(entity1),HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-    }   @PutMapping("/InternalEntity/{id}")
-    public ResponseEntity<Entity> updateInternalEntity(@PathVariable("id") String id, @RequestBody InternalEntity entity) {
-        Optional<Entity> entityData = entityRepository.findById(id);
-
-        if (entityData.isPresent()) {
-            InternalEntity entity1=(InternalEntity) entityData.get();
-            entity1.setManager(entity.isManager());
-            entity1.setInternalTeam(entity.getInternalTeam());
-            entity1.setName(entity.getName());
-            entity1.setPhoneNumber(entity.getPhoneNumber());
-            entity1.setEmail(entity.getEmail());
-            return new ResponseEntity<>(entityRepository.save(entity1),HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    //    @Transactional
+    @PutMapping("/{id}")
+    public ResponseEntity<HttpStatus> updateEntity(@PathVariable("id") String id,
+                                                   @RequestParam(required = false) String name,
+                                                   @RequestParam(required = false) String email,
+                                                   @RequestParam(required = false) String company,
+                                                   @RequestParam(required = false) String phoneNumber,
+                                                   @RequestParam(required = false) InternalTeam internalTeam
+    ) {
+        Optional<Entity> entity = entityRepository.findById(id);
+        if (entity.isPresent()) {
+            Entity entity1 = entity.get();
+            if (name != null && name.length() > 0) {
+                entity1.setName(name);
+            }
+            if (email != null && email.length() > 0) {
+                entity1.setEmail(email);
+            }
+            if (company != null && company.length() > 0) {
+                ((ExternalBusinessEntity) entity1).setCompany(company);
+            }
+            if (phoneNumber != null && phoneNumber.length() > 0) {
+                entity1.setName(phoneNumber);
+            }
+            if (internalTeam != null) {
+                ((InternalEntity) entity1).setInternalTeam(internalTeam);
+            }
+            entityRepository.save(entity1);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
 

@@ -11,7 +11,7 @@ public interface EntityRepository extends MongoRepository<Entity, String> {
     Optional<Entity> findEntityByEmail(String email);
 
     @Query("{name:?0}")
-    List<Entity> findEntityByName(String name);
+    Optional<Entity> findEntityByName(String name);
 
     @Query("{_class:?0}")
     List<Entity> findEntityByClass(String c);
@@ -23,5 +23,4 @@ public interface EntityRepository extends MongoRepository<Entity, String> {
     List<Entity> findEntityByTeam(InternalTeam team);
 
 //    ResponseEntity<HttpStatus> importEntities();
-//    //TODO add basic CRUD operations
 }
