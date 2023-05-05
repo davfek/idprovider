@@ -9,8 +9,8 @@ public class InternalEntity extends Entity {
     private InternalTeam internalTeam;
     private boolean isManager;
 
-    public InternalEntity(String name, String phoneNumber, String email, LocalDateTime created, InternalTeam internalTeam, boolean isManager) {
-        super(name, phoneNumber, email, created);
+    public InternalEntity(String name, String phoneNumber, String email, InternalTeam internalTeam, boolean isManager) {
+        super(name, phoneNumber, email, LocalDateTime.now());
         this.internalTeam = internalTeam;
         this.isManager = isManager;
     }
