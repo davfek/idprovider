@@ -8,3 +8,5 @@
     -Added connection to MongoDB+docker compose to launch DB
     -Created entity class
     -created entity subclasses that reflect possible variations of entities
+    -added rest api to docker compose
+    -added base data 

@@ -8,8 +8,11 @@ import java.time.LocalDateTime;
 public class ExternalBusinessEntity extends Entity{
     private String company;
 
-    public ExternalBusinessEntity(String name, String phoneNumber, String email, LocalDateTime created, String company) {
-        super(name, phoneNumber, email, created);
+    public ExternalBusinessEntity() {
+    }
+
+    public ExternalBusinessEntity(String name, String phoneNumber, String email, String company) {
+        super(name, phoneNumber, email, LocalDateTime.now());
         this.company = company;
     }
 
@@ -19,5 +22,17 @@ public class ExternalBusinessEntity extends Entity{
 
     public void setCompany(String company) {
         this.company = company;
+    }
+    @Override
+    public String toString() {
+
+        return "ExternalBusinessEntity{" +
+                "id='" + this.getId() + '\'' +
+                ", name='" + this.getName() + '\'' +
+                ", phoneNumber='" + this.getPhoneNumber() + '\'' +
+                ", email='" + this.getEmail() + '\'' +
+                ", created=" + this.getCreated() +
+                ", company=" + company +
+                '}';
     }
 }

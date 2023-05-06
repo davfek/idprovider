@@ -6,6 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,6 +97,32 @@ public class EntityController {
 
     }
 
+    @PostMapping("/BulkImport")
+    public void bulkImport(String path) throws IOException {
+//        Path path1=Path.of(path);
+        BufferedReader reader=new BufferedReader(new FileReader(String.valueOf(path)));
+        String line;
+        List<Entity> entityList=new ArrayList<>();
+        while ((line=reader.readLine())!=null){
+            Entity entity;
+            String[] values=line.trim().split("[,:]");
+            String businessRelation=values[1];
+            switch (businessRelation.toLowerCase()){
+                case "externalprivate":
+                    entity=new ExternalPrivateEntity(values[3],values[5],values[7]);
+                    entityList.add(entity);
+                    break;
+                case "externalbusiness":
+                    entity=new ExternalBusinessEntity(values[3],values[5],values[7],values[9]);
+                    entityList.add(entity);
+                    break;
+                case "internal":
+                    entity=new InternalEntity(values[3],values[5],values[7],InternalTeam.valueOf(values[9]),Boolean.parseBoolean(values[11]));
+                    entityList.add(entity);
+                    break;
+            }
+        }
+    }
     @PostMapping("/ExternalBusinessEntity")
     public ResponseEntity<Entity> createExternalBusinessEntity(@RequestBody ExternalBusinessEntity entity) {
         try {

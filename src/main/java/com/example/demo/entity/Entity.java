@@ -33,4 +33,14 @@ public abstract class Entity {
         this.created = created;
     }
 
+    @Override
+    public String toString() {
+        return "Entity{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", created=" + created +
+                '}';
+    }
 }
