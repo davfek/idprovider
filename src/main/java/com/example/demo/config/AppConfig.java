@@ -28,11 +28,14 @@ public class AppConfig {
         return new MongoTemplate(mongoClient(), "mongodb");
     }
 
+    //base data first init
     @Bean
     CommandLineRunner runner(EntityRepository entityRepository) {
         return args -> {
-            List<Entity> entityList = readDataFromFile();
-            entityRepository.insert(entityList);
+            if (entityRepository.findAll().isEmpty()) {
+                List<Entity> entityList = readDataFromFile();
+                entityRepository.insert(entityList);
+            }
         };
     }
 
