@@ -11,7 +11,7 @@ public class ExternalPrivatePerson extends Person {
     }
 
     public ExternalPrivatePerson(String name, String phoneNumber, String email) {
-        super(name, phoneNumber, email, LocalDateTime.now());
+        super(BusinessRelation.EXTERNAL_PRIVATE,name, phoneNumber, email, LocalDateTime.now());
     }
     @Override
     public String toString() {

@@ -14,7 +14,7 @@ public class InternalPerson extends Person {
     }
 
     public InternalPerson(String name, String phoneNumber, String email, InternalTeam internalTeam, boolean isManager) {
-        super(name, phoneNumber, email, LocalDateTime.now());
+        super(BusinessRelation.INTERNAL,name, phoneNumber, email, LocalDateTime.now());
         this.internalTeam = internalTeam;
         this.isManager = isManager;
     }

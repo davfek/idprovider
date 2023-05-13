@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 public abstract class Person {
     @Id
     private String id;
+    private BusinessRelation businessRelation;
 
     private String name;
     private String phoneNumber;
@@ -26,7 +27,8 @@ public abstract class Person {
 
 
 
-    public Person(String name, String phoneNumber, String email, LocalDateTime created) {
+    public Person(BusinessRelation businessRelation,String name, String phoneNumber, String email, LocalDateTime created) {
+        this.businessRelation=businessRelation;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;

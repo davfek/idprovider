@@ -13,7 +13,7 @@ public class ExternalBusinessPerson extends Person {
     }
 
     public ExternalBusinessPerson(String name, String phoneNumber, String email, String company) {
-        super(name, phoneNumber, email, LocalDateTime.now());
+        super(BusinessRelation.EXTERNAL_BUSINESS,name, phoneNumber, email, LocalDateTime.now());
         this.company = company;
     }
 

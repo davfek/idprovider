@@ -10,18 +10,25 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonService {
     private final PersonRepository personRepository;
+    private final PersonDTOMapper personDTOMapper;
 
     @Autowired
-    public PersonService(PersonRepository personRepository){
+    public PersonService(PersonRepository personRepository,PersonDTOMapper personDTOMapper){
         this.personRepository=personRepository;
+        this.personDTOMapper=personDTOMapper;
     }
 
-    public ResponseEntity<List<Person>> findAll() {
-        return new ResponseEntity<>(personRepository.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<PersonDTO>> findAll() {
+        return new ResponseEntity<>(personRepository.findAll().
+                stream().
+                map(personDTOMapper)
+                .collect(Collectors.toList())
+                ,HttpStatus.OK);
     }
 
     public ResponseEntity<Person> findByEmail(String email) {
@@ -32,8 +39,8 @@ public class PersonService {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    public ResponseEntity<Person> findById(String id) {
-        Optional<Person> entityData = personRepository.findById(id);
+    public ResponseEntity<PersonDTO> findById(String id) {
+        Optional<PersonDTO> entityData = personRepository.findById(id).map(personDTOMapper);
         if (entityData.isPresent()) {
             return new ResponseEntity<>(entityData.get(), HttpStatus.OK);
         } else {

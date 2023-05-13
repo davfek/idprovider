@@ -22,7 +22,7 @@ public class PersonController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Person>> findAll() {
+    public ResponseEntity<List<PersonDTO>> findAll() {
         return personService.findAll();
     }
 
@@ -32,7 +32,7 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Person> findById(@PathVariable("id") String id) {
+    public ResponseEntity<PersonDTO> findById(@PathVariable("id") String id) {
         return personService.findById(id);
     }
 
