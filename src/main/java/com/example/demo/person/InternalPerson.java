@@ -18,6 +18,11 @@ public class InternalPerson extends Person {
         this.internalTeam = internalTeam;
         this.isManager = isManager;
     }
+    public InternalPerson(String name, String phoneNumber, String email,LocalDateTime created, InternalTeam internalTeam, boolean isManager) {
+        super(BusinessRelation.INTERNAL,name, phoneNumber, email, created);
+        this.internalTeam = internalTeam;
+        this.isManager = isManager;
+    }
 
     public InternalTeam getInternalTeam() {
         return internalTeam;

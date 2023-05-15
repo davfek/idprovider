@@ -27,7 +27,7 @@ public class PersonController {
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<Person> findByEmail(@PathVariable("email") String email) {
+    public ResponseEntity<PersonDTO> findByEmail(@PathVariable("email") String email) {
         return personService.findByEmail(email);
     }
 
@@ -37,23 +37,22 @@ public class PersonController {
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<Person> findByName(@PathVariable("name") String name) {
+    public ResponseEntity<PersonDTO> findByName(@PathVariable("name") String name) {
         return personService.findByName(name);
     }
 
-
-    @GetMapping("/class/{_class}")
-    public ResponseEntity<List<Person>> findByClass(@PathVariable("_class") String _class) {
-        return personService.findByClass(_class);
+    @GetMapping("/relation/{relation}")
+    public ResponseEntity<List<PersonDTO>> findByBusinessRelation(@PathVariable("relation") String relation){
+       return personService.findByBusinessRelation(relation);
     }
 
     @GetMapping("/company/{company}")
-    public ResponseEntity<List<Person>> findByCompany(@PathVariable("company") String company) {
+    public ResponseEntity<List<PersonDTO>> findByCompany(@PathVariable("company") String company) {
         return personService.findByCompany(company);
     }
 
     @GetMapping("/team/{internalTeam}")
-    public ResponseEntity<List<Person>> findByTeam(@PathVariable("company") InternalTeam internalTeam) {
+    public ResponseEntity<List<PersonDTO>> findByTeam(@PathVariable("company") InternalTeam internalTeam) {
         return personService.findByTeam(internalTeam);
     }
 
@@ -67,21 +66,24 @@ public class PersonController {
     public ResponseEntity<HttpStatus> bulkImport(@RequestBody String data) {
         return personService.bulkImport(data);
     }
-
-    @PostMapping("/externalBusinessEntity")
-    public ResponseEntity<Person> createExternalBusinessPerson(@RequestBody ExternalBusinessPerson entity) {
-        return personService.createExternalBusinessPerson(entity);
+    @PostMapping
+    public ResponseEntity<HttpStatus> createPerson(@RequestBody PersonDTO personDTO){
+        return personService.createPerson(personDTO);
     }
-
-    @PostMapping("/externalPrivatePerson")
-    public ResponseEntity<Person> createExternalPrivatePerson(@RequestBody ExternalPrivatePerson entity) {
-        return personService.createExternalPrivatePerson(entity);
-    }
-
-    @PostMapping("/internalPerson")
-    public ResponseEntity<Person> createInternalPerson(@RequestBody InternalPerson entity) {
-        return personService.createInternalPerson(entity);
-    }
+//    @PostMapping("/externalBusinessEntity")
+//    public ResponseEntity<Person> createExternalBusinessPerson(@RequestBody ExternalBusinessPerson entity) {
+//        return personService.createExternalBusinessPerson(entity);
+//    }
+//
+//    @PostMapping("/externalPrivatePerson")
+//    public ResponseEntity<Person> createExternalPrivatePerson(@RequestBody ExternalPrivatePerson entity) {
+//        return personService.createExternalPrivatePerson(entity);
+//    }
+//
+//    @PostMapping("/internalPerson")
+//    public ResponseEntity<Person> createInternalPerson(@RequestBody InternalPerson entity) {
+//        return personService.createInternalPerson(entity);
+//    }
 
     //    @Transactional
     @PutMapping("/{id}")

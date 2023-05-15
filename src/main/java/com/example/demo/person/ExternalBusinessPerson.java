@@ -16,6 +16,10 @@ public class ExternalBusinessPerson extends Person {
         super(BusinessRelation.EXTERNAL_BUSINESS,name, phoneNumber, email, LocalDateTime.now());
         this.company = company;
     }
+    public ExternalBusinessPerson(String name, String phoneNumber, String email, String company,LocalDateTime created) {
+        super(BusinessRelation.EXTERNAL_BUSINESS,name, phoneNumber, email, created);
+        this.company = company;
+    }
 
     public String getCompany() {
         return company;

@@ -13,6 +13,10 @@ public class ExternalPrivatePerson extends Person {
     public ExternalPrivatePerson(String name, String phoneNumber, String email) {
         super(BusinessRelation.EXTERNAL_PRIVATE,name, phoneNumber, email, LocalDateTime.now());
     }
+    public ExternalPrivatePerson(String name, String phoneNumber, String email,LocalDateTime created) {
+        super(BusinessRelation.EXTERNAL_PRIVATE,name, phoneNumber, email, created);
+    }
+
     @Override
     public String toString() {
 
