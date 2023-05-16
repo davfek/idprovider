@@ -1,15 +1,13 @@
 package com.example.demo.person;
 
 import lombok.Data;
-
-import java.time.LocalDateTime;
 @Data
 public class PersonDTO{
     String id;
     String name;
     String phoneNumber;
     String email;
-    LocalDateTime created;
+
     InternalTeam internalTeam=InternalTeam.NON_APPLICABLE;
 
     boolean isManager=false;
@@ -18,30 +16,28 @@ public class PersonDTO{
     public PersonDTO() {
     }
 
-    public PersonDTO(String id, String name, String phoneNumber, String email, LocalDateTime created) {
+    public PersonDTO(String id, String name, String phoneNumber, String email) {
         this.id = id;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.created = created;
+
     }
 
-    public PersonDTO(String id, String name, String phoneNumber, String email, LocalDateTime created, InternalTeam internalTeam, boolean isManager) {
+    public PersonDTO(String id, String name, String phoneNumber, String email, InternalTeam internalTeam, boolean isManager) {
         this.id = id;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.created = created;
         this.internalTeam = internalTeam;
         this.isManager = isManager;
     }
 
-    public PersonDTO(String id, String name, String phoneNumber, String email, LocalDateTime created, String company) {
+    public PersonDTO(String id, String name, String phoneNumber, String email, String company) {
         this.id = id;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.created = created;
         this.company = company;
     }
 }

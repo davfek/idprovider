@@ -18,6 +18,9 @@ public interface PersonRepository extends MongoRepository<Person, String> {
     @Query("{name:?0}")
     Optional<Person> findByName(String name);
 
+    @Query("{phoneNumber:?0}")
+    Optional<Person> findByPhoneNumber(String phoneNumber);
+
     @Query("{company:?0}")
     List<Person> findByCompany(String company);
 

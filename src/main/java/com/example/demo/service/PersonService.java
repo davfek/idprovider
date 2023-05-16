@@ -31,6 +31,34 @@ public class PersonService {
                 , HttpStatus.OK);
     }
 
+    public ResponseEntity<List<PersonDTO>> findCompound(String param) {
+        List<Person> personList = new ArrayList<>();
+        if (personRepository.findByName(param).isPresent()) {
+            personList.add(personRepository.findByName(param).get());
+        }
+        if (personRepository.findByPhoneNumber(param).isPresent()) {
+            personList.add(personRepository.findByPhoneNumber(param).get());
+        }
+        if (personRepository.findByEmail(param).isPresent()) {
+            personList.add(personRepository.findByEmail(param).get());
+        }
+        if (personList.size() < 1) {
+            personList.addAll(personRepository.findByCompany(param));
+        }
+        if (personList.size() < 1) {
+            personList.addAll(personRepository.findByTeam(InternalTeam.valueOf(param)));
+        }
+        List<PersonDTO> personDTOList = personList.stream().map(personDTOMapper::mapToDTO).toList();
+
+
+        if (personList.size() > 0) {
+            return new ResponseEntity<>(personDTOList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
     public ResponseEntity<PersonDTO> findByEmail(String email) {
         Optional<PersonDTO> entityData = personRepository.findByEmail(email).map(personDTOMapper::mapToDTO);
         if (entityData.isPresent()) {
@@ -101,41 +129,69 @@ public class PersonService {
         }
     }
 
-    public ResponseEntity<HttpStatus> createPerson(PersonDTO personDTO){
+    public ResponseEntity<HttpStatus> createPerson(PersonDTO personDTO) {
         try {
             personRepository.save(personDTOMapper.mapToPerson(personDTO));
             return new ResponseEntity<>(HttpStatus.CREATED);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-//    public ResponseEntity<Person> createExternalBusinessPerson(ExternalBusinessPerson externalBusinessPerson) {
-//        try {
-//            ExternalBusinessPerson entity1 = personRepository.save(externalBusinessPerson);
-//            return new ResponseEntity<>(entity1, HttpStatus.CREATED);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-//
-//    public ResponseEntity<Person> createExternalPrivatePerson(ExternalPrivatePerson externalPrivatePerson) {
-//        try {
-//            ExternalPrivatePerson entity1 = personRepository.save(externalPrivatePerson);
-//            return new ResponseEntity<>(entity1, HttpStatus.CREATED);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-//
-//    public ResponseEntity<Person> createInternalPerson(InternalPerson internalPerson) {
-//        try {
-//            InternalPerson entity1 = personRepository.save(internalPerson);
-//            return new ResponseEntity<>(entity1, HttpStatus.CREATED);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    public ResponseEntity<HttpStatus> updateEmail(String id, String email) {
+        Optional<Person> person = personRepository.findById(id);
+        if (person.isPresent()) {
+            person.get().setEmail(email);
+            personRepository.save(person.get());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<HttpStatus> updateName(String id, String name) {
+        Optional<Person> person = personRepository.findById(id);
+        if (person.isPresent()) {
+            person.get().setName(name);
+            personRepository.save(person.get());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<HttpStatus> updatePhoneNumber(String id, String phonenumber) {
+        Optional<Person> person = personRepository.findById(id);
+        if (person.isPresent()) {
+            person.get().setPhoneNumber(phonenumber);
+            personRepository.save(person.get());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<HttpStatus> updateCompany(String id, String company) {
+        Optional<Person> person = personRepository.findById(id);
+        if (person.isPresent() && person.get().getBusinessRelation().equals(BusinessRelation.EXTERNAL_BUSINESS)) {
+            ((ExternalBusinessPerson)person.get()).setCompany(company);
+            personRepository.save(person.get());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<HttpStatus> updateTeam(String id, String team) {
+        Optional<Person> person = personRepository.findById(id);
+        if (person.isPresent() && person.get().getBusinessRelation().equals(BusinessRelation.INTERNAL)) {
+            ((InternalPerson)person.get()).setInternalTeam(InternalTeam.valueOf(team));
+            personRepository.save(person.get());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     public ResponseEntity<HttpStatus> updatePerson(String id, String name, String email, String company, String phoneNumber, InternalTeam internalTeam) {
         Optional<Person> entity = personRepository.findById(id);

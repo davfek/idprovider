@@ -2,8 +2,6 @@ package com.example.demo.person;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
-
 @Document(collection = "person")
 public class ExternalBusinessPerson extends Person {
 //    private final String businessRelation ="ExternalBusiness";
@@ -13,11 +11,7 @@ public class ExternalBusinessPerson extends Person {
     }
 
     public ExternalBusinessPerson(String name, String phoneNumber, String email, String company) {
-        super(BusinessRelation.EXTERNAL_BUSINESS,name, phoneNumber, email, LocalDateTime.now());
-        this.company = company;
-    }
-    public ExternalBusinessPerson(String name, String phoneNumber, String email, String company,LocalDateTime created) {
-        super(BusinessRelation.EXTERNAL_BUSINESS,name, phoneNumber, email, created);
+        super(BusinessRelation.EXTERNAL_BUSINESS,name, phoneNumber, email);
         this.company = company;
     }
 
@@ -36,7 +30,6 @@ public class ExternalBusinessPerson extends Person {
                 ", name='" + this.getName() + '\'' +
                 ", phoneNumber='" + this.getPhoneNumber() + '\'' +
                 ", email='" + this.getEmail() + '\'' +
-                ", created=" + this.getCreated() +
                 ", company=" + company +
                 '}';
     }

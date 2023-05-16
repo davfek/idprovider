@@ -6,8 +6,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
-
 @Data
 @Document(collection = "person")
 public abstract class Person {
@@ -19,7 +17,7 @@ public abstract class Person {
     private String phoneNumber;
     @Indexed(unique = true)
     private String email;
-    private LocalDateTime created;
+
 
 
     public Person() {
@@ -27,12 +25,12 @@ public abstract class Person {
 
 
 
-    public Person(BusinessRelation businessRelation,String name, String phoneNumber, String email, LocalDateTime created) {
+    public Person(BusinessRelation businessRelation,String name, String phoneNumber, String email) {
         this.businessRelation=businessRelation;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.created = created;
+
     }
 
     @Override
@@ -42,7 +40,6 @@ public abstract class Person {
                 ", name='" + name + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
-                ", created=" + created +
                 '}';
     }
 }
