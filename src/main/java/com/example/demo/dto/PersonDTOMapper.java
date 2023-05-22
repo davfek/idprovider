@@ -1,5 +1,6 @@
-package com.example.demo.person;
+package com.example.demo.dto;
 
+import com.example.demo.person.*;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,7 +19,7 @@ public class PersonDTOMapper  {
     }
 
     public Person mapToPerson(PersonDTO personDTO){
-        if (personDTO.getInternalTeam()==InternalTeam.NON_APPLICABLE && personDTO.getCompany().equals("n/a")){
+        if (personDTO.getInternalTeam()== InternalTeam.NON_APPLICABLE && personDTO.getCompany().equals("n/a")){
             return new ExternalPrivatePerson(personDTO.getName(), personDTO.getPhoneNumber(), personDTO.getEmail());
         }else if (personDTO.getInternalTeam()==InternalTeam.NON_APPLICABLE && !personDTO.getCompany().equals("n/a")){
             return new ExternalBusinessPerson(personDTO.getName(), personDTO.getPhoneNumber(), personDTO.getEmail(), personDTO.getCompany());
