@@ -1,0 +1,24 @@
+businessRelation:externalprivate,name: EP1,phoneNumber:EPphoneN1,email:EPemail1
+businessRelation:externalbusiness,name:EB1,phoneNumber:EBphoneN1,email:EBemail1,company:company1
+businessRelation:internal,name:I1,phoneNumber:Iphone1,email:Iemail1,internalTeam:HR,isManager:true
+businessRelation:externalprivate,name: EP2,phoneNumber:EPphoneN2,email:EPemail2
+businessRelation:externalbusiness,name:EB2,phoneNumber:EBphoneN2,email:EBemail2,company:company2
+businessRelation:internal,name:I2,phoneNumber:Iphone2,email:Iemail2,internalTeam:IT_SUPPORT,isManager:false
+businessRelation:externalprivate,name: EP3,phoneNumber:EPphoneN3,email:EPemail3
+businessRelation:externalbusiness,name:EB3,phoneNumber:EBphoneN3,email:EBemail3,company:company3
+businessRelation:internal,name:I3,phoneNumber:Iphone3,email:Iemail3,internalTeam:ACCOUNTING,isManager:true
+businessRelation:externalprivate,name: EP4,phoneNumber:EPphoneN4,email:EPemail4
+businessRelation:externalbusiness,name:EB4,phoneNumber:EBphoneN4,email:EBemail4,company:company4
+businessRelation:internal,name:I4,phoneNumber:Iphone4,email:Iemail4,internalTeam:HELP_DESK,isManager:false
+businessRelation:externalprivate,name: EP5,phoneNumber:EPphoneN5,email:EPemail5
+businessRelation:externalbusiness,name:EB5,phoneNumber:EBphoneN5,email:EBemail5,company:company5
+businessRelation:internal,name:I5,phoneNumber:Iphone5,email:Iemail5,internalTeam:HR,isManager:false
+businessRelation:externalprivate,name: EP6,phoneNumber:EPphoneN6,email:EPemail6
+businessRelation:externalbusiness,name:EB6,phoneNumber:EBphoneN6,email:EBemail6,company:company6
+businessRelation:internal,name:I6,phoneNumber:Iphone6,email:Iemail6,internalTeam:IT_SUPPORT,isManager:true
+businessRelation:externalprivate,name: EP7,phoneNumber:EPphoneN7,email:EPemail7
+businessRelation:externalbusiness,name:EB7,phoneNumber:EBphoneN7,email:EBemail7,company:company7
+businessRelation:internal,name:I7,phoneNumber:Iphone7,email:Iemail7,internalTeam:ACCOUNTING,isManager:false
+businessRelation:externalprivate,name: EP8,phoneNumber:EPphoneN8,email:EPemail8
+businessRelation:externalbusiness,name:EB8,phoneNumber:EBphoneN8,email:EBemail8,company:company8
+businessRelation:internal,name:I8,phoneNumber:Iphone8,email:Iemail8,internalTeam:HELP_DESK,isManager:true

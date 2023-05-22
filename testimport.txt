@@ -1,0 +1,3 @@
+|businessRelation:externalprivate,name: EP1,phoneNumber:EPphoneN1,email:EPemail1
+|businessRelation:externalbusiness,name:EB1,phoneNumber:EBphoneN1,email:EBemail1,company:company1
+|businessRelation:internal,name:I1,phoneNumber:Iphone1,email:Iemail1,internalTeam:HR,isManager:true
