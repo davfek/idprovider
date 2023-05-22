@@ -1,5 +1,6 @@
-package com.example.demo.person;
+package com.example.demo.dto;
 
+import com.example.demo.person.InternalTeam;
 import lombok.Data;
 @Data
 public class PersonDTO{

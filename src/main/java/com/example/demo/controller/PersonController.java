@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.PersonDTO;
 import com.example.demo.person.*;
 import com.example.demo.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
