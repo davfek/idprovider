@@ -25,15 +25,17 @@ public class PersonService {
         this.personDTOMapper = personDTOMapper;
     }
 
-    public ResponseEntity<List<PersonDTO>> findAll() {
-        return new ResponseEntity<>(personRepository.findAll().
-                stream().
-                map(personDTOMapper::mapToDTO)
-                .collect(Collectors.toList())
-                , HttpStatus.OK);
+    public List<PersonDTO> findAll() {
+        return personRepository.findAll().stream().map(personDTOMapper::mapToDTO).collect(Collectors.toList());
+
+//        return new ResponseEntity<>(personRepository.findAll().
+//                stream().
+//                map(personDTOMapper::mapToDTO)
+//                .collect(Collectors.toList())
+//                , HttpStatus.OK);
     }
 
-    public ResponseEntity<List<PersonDTO>> findCompound(String param) {
+    public List<PersonDTO> findCompound(String param) {
         List<Person> personList = new ArrayList<>();
         if (personRepository.findByName(param).isPresent()) {
             personList.add(personRepository.findByName(param).get());
@@ -52,42 +54,42 @@ public class PersonService {
         }
         List<PersonDTO> personDTOList = personList.stream().map(personDTOMapper::mapToDTO).toList();
 
-
-        if (personList.size() > 0) {
-            return new ResponseEntity<>(personDTOList, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return personDTOList;
+//        if (personList.size() > 0) {
+//            return new ResponseEntity<>(personDTOList, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
 
     }
 
-    public ResponseEntity<PersonDTO> findByEmail(String email) {
-        Optional<PersonDTO> entityData = personRepository.findByEmail(email).map(personDTOMapper::mapToDTO);
-        if (entityData.isPresent()) {
-            return new ResponseEntity<>(entityData.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public Optional<PersonDTO> findByEmail(String email) {
+       return personRepository.findByEmail(email).map(personDTOMapper::mapToDTO);
+//        if (entityData.isPresent()) {
+//            return new ResponseEntity<>(entityData.get(), HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
     }
 
-    public ResponseEntity<PersonDTO> findById(String id) {
-        Optional<PersonDTO> entityData = personRepository.findById(id).map(personDTOMapper::mapToDTO);
-        if (entityData.isPresent()) {
-            return new ResponseEntity<>(entityData.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public Optional<PersonDTO> findById(String id) {
+        return personRepository.findById(id).map(personDTOMapper::mapToDTO);
+//        if (entityData.isPresent()) {
+//            return new ResponseEntity<>(entityData.get(), HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
     }
 
-    public ResponseEntity<PersonDTO> findByName(String name) {
-        Optional<PersonDTO> entityData = personRepository.findByName(name).map(personDTOMapper::mapToDTO);
-        if (entityData.isPresent()) {
-            return new ResponseEntity<>(entityData.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public Optional<PersonDTO> findByName(String name) {
+        return personRepository.findByName(name).map(personDTOMapper::mapToDTO);
+//        if (entityData.isPresent()) {
+//            return new ResponseEntity<>(entityData.get(), HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
     }
-
+    //TODO
     public ResponseEntity<List<PersonDTO>> findByBusinessRelation(String relation) {
         BusinessRelation businessRelation = null;
         switch (relation.toLowerCase()) {
@@ -111,91 +113,83 @@ public class PersonService {
         }
     }
 
-    public ResponseEntity<List<PersonDTO>> findByCompany(String company) {
-        List<PersonDTO> personData = personRepository.findByCompany(company).stream().map(personDTOMapper::mapToDTO).toList();
+    public List<PersonDTO> findByCompany(String company) {
+        return personRepository.findByCompany(company).stream().map(personDTOMapper::mapToDTO).toList();
 
-        if (!personData.isEmpty()) {
-            return new ResponseEntity<>(personData, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+//        if (!personData.isEmpty()) {
+//            return new ResponseEntity<>(personData, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
     }
 
-    public ResponseEntity<List<PersonDTO>> findByTeam(InternalTeam internalTeam) {
-        List<PersonDTO> personData = personRepository.findByTeam(internalTeam).stream().map(personDTOMapper::mapToDTO).toList();
+    public List<PersonDTO> findByTeam(InternalTeam internalTeam) {
+        return personRepository.findByTeam(internalTeam).stream().map(personDTOMapper::mapToDTO).toList();
 
-        if (!personData.isEmpty()) {
-            return new ResponseEntity<>(personData, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+//        if (!personData.isEmpty()) {
+//            return new ResponseEntity<>(personData, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
     }
 
-    public ResponseEntity<HttpStatus> createPerson(PersonDTO personDTO) {
-        try {
-            personRepository.save(personDTOMapper.mapToPerson(personDTO));
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public Person createPerson(PersonDTO personDTO) {
+            return personRepository.save(personDTOMapper.mapToPerson(personDTO));
+
+
     }
 
-    public ResponseEntity<HttpStatus> updateEmail(String id, String email) {
+    public Person updateEmail(String id, String email) {
         Optional<Person> person = personRepository.findById(id);
         if (person.isPresent()) {
             person.get().setEmail(email);
-            personRepository.save(person.get());
-            return new ResponseEntity<>(HttpStatus.OK);
+            return personRepository.save(person.get());
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null;
         }
     }
 
-    public ResponseEntity<HttpStatus> updateName(String id, String name) {
+    public Person updateName(String id, String name) {
         Optional<Person> person = personRepository.findById(id);
         if (person.isPresent()) {
             person.get().setName(name);
-            personRepository.save(person.get());
-            return new ResponseEntity<>(HttpStatus.OK);
+            return personRepository.save(person.get());
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null;
         }
     }
 
-    public ResponseEntity<HttpStatus> updatePhoneNumber(String id, String phonenumber) {
+    public Person updatePhoneNumber(String id, String phonenumber) {
         Optional<Person> person = personRepository.findById(id);
         if (person.isPresent()) {
             person.get().setPhoneNumber(phonenumber);
-            personRepository.save(person.get());
-            return new ResponseEntity<>(HttpStatus.OK);
+            return personRepository.save(person.get());
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null;
         }
     }
 
-    public ResponseEntity<HttpStatus> updateCompany(String id, String company) {
+    public Person updateCompany(String id, String company) {
         Optional<Person> person = personRepository.findById(id);
         if (person.isPresent() && person.get().getBusinessRelation().equals(BusinessRelation.EXTERNAL_BUSINESS)) {
             ((ExternalBusinessPerson)person.get()).setCompany(company);
-            personRepository.save(person.get());
-            return new ResponseEntity<>(HttpStatus.OK);
+            return personRepository.save(person.get());
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null;
         }
     }
 
-    public ResponseEntity<HttpStatus> updateTeam(String id, String team) {
+    public Person updateTeam(String id, String team) {
         Optional<Person> person = personRepository.findById(id);
         if (person.isPresent() && person.get().getBusinessRelation().equals(BusinessRelation.INTERNAL)) {
             ((InternalPerson)person.get()).setInternalTeam(InternalTeam.valueOf(team));
-            personRepository.save(person.get());
-            return new ResponseEntity<>(HttpStatus.OK);
+            return personRepository.save(person.get());
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null;
         }
     }
 
-    public ResponseEntity<HttpStatus> updatePerson(String id, String name, String email, String company, String phoneNumber, InternalTeam internalTeam) {
+    public Person updatePerson(String id, String name, String email, String company, String phoneNumber, InternalTeam internalTeam) {
         Optional<Person> entity = personRepository.findById(id);
         if (entity.isPresent()) {
             Person person1 = entity.get();
@@ -214,13 +208,12 @@ public class PersonService {
             if (internalTeam != null) {
                 ((InternalPerson) person1).setInternalTeam(internalTeam);
             }
-            personRepository.save(person1);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return personRepository.save(person1);
+        } else return null;
     }
 
-    public ResponseEntity<HttpStatus> bulkImport(String data) {
-        try {
+    public List<Person> bulkImport(String data) {
+
             String[] sArray = data.split("\\|");
             List<Person> personArrayList = new ArrayList<>();
             for (String s : sArray) {
@@ -245,27 +238,31 @@ public class PersonService {
                 }
             }
             personRepository.insert(personArrayList);
-            return new ResponseEntity<HttpStatus>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<HttpStatus>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+
+            return personRepository.findAll();
     }
 
-    public ResponseEntity<HttpStatus> deleteById(String id) {
-        try {
+    public boolean deleteById(String id) {
             personRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            Optional<Person> person=personRepository.findById(id);
+            if (person.isPresent()){
+                return false;
+            }else return true;
+
     }
 
-    public ResponseEntity<HttpStatus> deleteAll() {
-        try {
-            personRepository.deleteAll();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public boolean deleteAll() {
+        personRepository.deleteAll();
+        if (personRepository.findAll().isEmpty()){
+            return true;
+        }else return false;
+
+
+//        try {
+//            personRepository.deleteAll();
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 }
